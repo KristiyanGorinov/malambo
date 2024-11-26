@@ -1,0 +1,58 @@
+html{
+    overflow: hidden;
+}
+main {
+    margin-top: 150px;
+    padding-bottom: 45px;
+    color: #333;
+    line-height: 1.6;
+    margin-left: 150px;
+}
+
+.posts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.post-card {
+    width: 300px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.author-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.post-title {
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.post-description {
+    color: #555;
+}
+
+.read-more {
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}

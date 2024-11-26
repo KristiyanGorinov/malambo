@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+          crossorigin="anonymous"/>
+{% endblock %}
+
+
+{% block content %}
+    <main>
+        <div class="container">
+            <div class="profile">
+                <div class="profile-header">
+                    <img src="{% static 'images/pfp.jpg' %}" alt="profile" class="profile-img">
+                    <div class="profile-text-container">
+                        <h1 class="profile-title"> {{ request.user.username }}</h1>
+                        <p class="profile-email"> {{ request.user.email }}</p>
+                    </div>
+                </div>
+                <div class="menu">
+                    <a href="" class="menu-link"><i class="fa-solid fa-circle-user menu-icon"></i>Account</a>
+                    <a href="{% url 'logout' %}" class="menu-link"><i class="fa-solid fa-right-from-bracket menu-icon"></i>Logout</a>
+                </div>
+            </div>
+
+
+            <form class="account" method="POST" action="">
+                {% csrf_token %}
+                <div class="account-header">
+                    <h1 class="account-title">Account Settings</h1>
+                    <div class="btn-container">
+                        <button type="submit" class="btn-save">Save</button>
+                    </div>
+                </div>
+
+                <div class="account-edit">
+                    <div class="input-container">
+                        <label>First Name</label>
+                        <input type="text" name="first_name"
+                               value="{{ form.first_name.value|default_if_none:request.user.first_name }}"
+                               placeholder="First Name">
+                    </div>
+                    <div class="input-container">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name"
+                               value="{{ form.last_name.value|default_if_none:request.user.last_name }}"
+                               placeholder="Last Name">
+                    </div>
+                </div>
+
+                <div class="account-edit">
+                    <div class="input-container">
+                        <label>Email</label>
+                        <input type="email" name="email"
+                               value="{{ form.email.value|default_if_none:request.user.email }}" placeholder="Email">
+                    </div>
+                    <div class="input-container">
+                        <label>Phone</label>
+                        <input type="text" name="phone" value="{{ profile.phone }}" placeholder="Phone">
+                    </div>
+                </div>
+
+                <div class="account-edit">
+                    <div class="input-container">
+                        <label>Info</label>
+                        <textarea name="info" placeholder="Info">{{ profile.info }}</textarea>
+                    </div>
+                </div>
+                {% for message in messages %}
+                <p id="messages">{{ message }}</p>
+            {% endfor %}
+            </form>
+
+            
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="post-detail">
+        <h1>{{ post.title }}</h1>
+        <p>By {{ post.author.username }} on {{ post.created_at|date:"F j, Y" }}</p>
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image">
+        <p>{{ post.description }}</p>
+    </div>
+{% endblock %}

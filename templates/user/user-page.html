@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/front.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+    <main>
+        <div class="container">
+            <!-- Left Column -->
+            <div class="column-left">
+                <div class="grid-item">
+                    <a href="https://chudniteskali.com" target="_blank">
+                        <img src="{% static 'images/post1.jpg' %}" alt="post">
+                    </a>
+                    <h3>The biggest gym in Varna has updated their boulder wall!</h3>
+                    <p>Apsaruh Vulchev</p>
+                </div>
+                <div class="grid-item">
+                    <a href="https://www.balkanclimbing.com" target="_blank">
+                        <img src="{% static 'images/post2.jpg' %}" alt="post">
+                    </a>
+                    <h3>The biggest climbing gym in the Balkans, located in Sofia is hosting monthly competitions!</h3>
+                    <p>BalkanClimbing</p>
+                </div>
+            </div>
+
+            <!-- Center Feature -->
+            <div class="grid-item medium">
+                <a href="https://basecamp-shop.com/?_gl=1*1fwu95t*_up*MQ..*_gs*MQ..&gclid=Cj0KCQiA6Ou5BhCrARIsAPoTxrC1RcxiQhRv3Ot4Vvl7CZOeTH3m8c20F1NXJLAGnKQice3hli3zAQoaAoS3EALw_wcB"
+                   target="_blank">
+                    <img src="{% static 'images/front-image.png' %}" alt="Gift Guide">
+                </a>
+                <h2>The Best shop for the Climber in Your Life</h2>
+                <p>Whether you’re picking gifts for a gym rat, a diehard alpinist, or any climber in between, Basecamp
+                    has you covered.</p>
+            </div>
+
+            <!-- Right Column -->
+            <div class="column-right">
+                <div class="grid-item">
+                    <a href="https://walltopia.com/the-last-stretch-to-the-top-the-successes-of-bulgarian-sport-climbing-in-2022/"
+                       target="_blank">
+                        <img src="{% static 'images/post3.jpg' %}" alt="post">
+                    </a>
+                    <h3>The Last Stretch to the Top – the Successes of Bulgarian Sport Climbing in 2022</h3>
+                    <p>Walltopia</p>
+                </div>
+                <div class="grid-item">
+                    <a href="{% url 'clubs' %}">
+                        <img src="{% static 'images/post4.jpg' %}" alt="post">
+                    </a>
+                    <h3>Become part of the climbing community and join a club, connect with fellow climbers and
+                        explore!</h3>
+                    <p>GeekClimbers</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Editor's Picks Section -->
+        <div class="editors-picks-section">
+            <!-- Green Banner -->
+            <div class="green-banner">
+                <p>Not in a club? What are you waiting for???</p>
+                <a href="{% url 'clubs' %}">
+                    <button>Join NOW!</button>
+                </a>
+            </div>
+
+            <!-- Editor's Picks Row -->
+            <div class="editors-picks-container">
+                <h2>OUR PICKS</h2>
+                <div class="editors-picks">
+                    <div class="pick-item">
+                        <img src="{% static 'images/post4.jpg' %}" alt="Climbing Careers">
+                        <p>How Do Climbing Careers End?</p>
+                    </div>
+                    <div class="pick-item">
+                        <img src="{% static 'images/post4.jpg' %}" alt="Patagonian Brothers">
+                        <p>Are These Patagonian Brothers Alpine Climbing’s Next Big Thing?</p>
+                    </div>
+                    <div class="pick-item">
+                        <img src="{% static 'images/post4.jpg' %}" alt="Climbing Hard">
+                        <p>I Thought Climbing “Hard” Was Everything. I’m Glad I Was Wrong.</p>
+                    </div>
+                    <div class="pick-item">
+                        <img src="{% static 'images/post4.jpg' %}" alt="Print Magazine">
+                        <p>Our Print Magazine is Back! Here’s How to Buy</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+{% endblock %}
