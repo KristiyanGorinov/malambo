@@ -6,8 +6,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.views.generic import ListView, View, DetailView
+from django.views.generic import ListView, View, DetailView, CreateView
 
+from SoftUniFinalExam.utils import get_user_obj
+from posts.forms import PostCreateForm
 from posts.models import Post
 from .decorators import unauthenticated_user, allowed_users, AllowedUsersMixin
 from .forms import CreateUserForm, ProfileUpdateForm
@@ -45,6 +47,35 @@ class PostDetailView(LoginRequiredMixin, AllowedUsersMixin, DetailView):
     slug_url_kwarg = 'slug'
     login_url = 'login'
     allowed_roles = ['admin', 'staff', 'user']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        related_posts = Post.objects.exclude(id=self.object.id)[:4]
+        context['related_posts'] = related_posts
+
+        return context
+
+
+class PostCreateView(LoginRequiredMixin, AllowedUsersMixin, CreateView):
+    model = Post
+    form_class = PostCreateForm
+    template_name = 'user/post_create.html'
+    success_url = reverse_lazy('posts')
+    context_object_name = 'posts'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
+
+    def form_valid(self, form):
+        logged_in_user = self.request.user
+        try:
+            custom_user = Users.objects.get(user=logged_in_user)
+        except Users.DoesNotExist:
+            raise ValueError("No corresponding Users instance found for the logged-in user.")
+
+        form.instance.user = custom_user
+        return super().form_valid(form)
+
 
 
 def clubs(request):
@@ -111,7 +142,6 @@ def register_user(request):
         if form.is_valid():
             email = form.cleaned_data['email']
 
-
             if User.objects.filter(email=email).exists():
                 messages.error(request, "This email is already registered in our system.")
                 return render(request, 'user/register-user.html', {'form': form})
@@ -162,6 +192,7 @@ def login_user(request):
 
         if user is not None:
             login(request, user)
+
             return redirect('user-home')
         else:
             messages.info(request, 'Username or Password is incorrect')

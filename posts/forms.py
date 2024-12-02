@@ -7,7 +7,7 @@ from posts.models import Post
 class PostBaseForm(forms.ModelForm):
     class Meta:
         model = Post
-        exclude = ('users',)
+        exclude = ('users', 'slug',)
 
 class PostCreateForm(PostBaseForm):
     pass

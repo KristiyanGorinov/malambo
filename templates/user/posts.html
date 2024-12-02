@@ -1,19 +1,28 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'styles/posts.css' %}">
 {% endblock %}
 {% block content %}
     <main>
+
+        <div class="add-post-button-container">
+            <a href="{% url 'create_post' %}" class="add-post-button">Add Post</a>
+        </div>
+    
         <div class="posts-container">
             {% for post in posts %}
                 <div class="post-card">
                     <div class="post-header">
                         <img src="{% static 'images/pfp.jpg' %}" alt="Author Image" class="author-image">
-                        <p class="author-name">{{ post.Users.username }}</p>
+                        <p class="author-name">{{ post.user.username }}</p>
                     </div>
                     <h3 class="post-title">{{ post.title }}</h3>
-                    <p class="post-description">{{ post.short_description }}</p>
+                    {% if post.image_url %}
+                        <img src="{{ post.image_url }}" alt="{{ post.title }}" class="post-image">
+                    {% endif %}
+                    <p class="post-description">{{ post.content|truncatewords:20 }}</p>
                     <a href="{% url 'post_detail' post.slug %}" class="read-more">Read More</a>
                 </div>
             {% endfor %}

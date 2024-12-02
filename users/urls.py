@@ -1,7 +1,7 @@
 from django.contrib.auth import logout
 from django.urls import path
 from users.views import register_user, login_user, logout_user, HomeView, AboutView, \
-    club_manage, user_home, user_profile, clubs, PostsView, PostDetailView
+    club_manage, user_home, user_profile, clubs, PostsView, PostDetailView, PostCreateView
 
 urlpatterns = [
     path('login/', login_user, name='login'),
@@ -20,4 +20,5 @@ urlpatterns = [
     path('clubs/', clubs, name='clubs'),
     path('posts/', PostsView.as_view(), name='posts'),
     path('post/<slug:slug>/', PostDetailView.as_view(), name='post_detail'),
+    path('create-post/', PostCreateView.as_view(), name='create_post'),
 ]
