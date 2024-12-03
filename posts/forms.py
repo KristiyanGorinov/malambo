@@ -1,6 +1,6 @@
 from django import forms
 
-from SoftUniFinalExam.mixins import ReadOnlyMixin
+from SoftUniFinalExam.mixins import ReadOnlyMixin, PlaceholderMixin
 from posts.models import Post
 
 
@@ -12,7 +12,7 @@ class PostBaseForm(forms.ModelForm):
 class PostCreateForm(PostBaseForm):
     pass
 
-class PostsEditForm(PostBaseForm):
+class PostsEditForm(PlaceholderMixin,PostBaseForm):
     pass
 
 class PostDeleteForm(ReadOnlyMixin, PostBaseForm):
