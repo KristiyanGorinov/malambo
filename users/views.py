@@ -6,11 +6,12 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.views.generic import ListView, View, DetailView, CreateView
+from django.views.generic import ListView, View, DetailView, CreateView, UpdateView, DeleteView
 
 from SoftUniFinalExam.utils import get_user_obj
-from posts.forms import PostCreateForm
+from posts.forms import PostCreateForm, PostsEditForm, PostDeleteForm
 from posts.models import Post
+from clubs.models import Club
 from .decorators import unauthenticated_user, allowed_users, AllowedUsersMixin
 from .forms import CreateUserForm, ProfileUpdateForm
 from django.contrib import messages
@@ -41,7 +42,7 @@ class PostsView(LoginRequiredMixin, AllowedUsersMixin, ListView):
 
 class PostDetailView(LoginRequiredMixin, AllowedUsersMixin, DetailView):
     model = Post
-    template_name = 'user/post_detail.html'
+    template_name = 'Posts/post_detail.html'
     context_object_name = 'post'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
@@ -60,7 +61,7 @@ class PostDetailView(LoginRequiredMixin, AllowedUsersMixin, DetailView):
 class PostCreateView(LoginRequiredMixin, AllowedUsersMixin, CreateView):
     model = Post
     form_class = PostCreateForm
-    template_name = 'user/post_create.html'
+    template_name = 'Posts/post_create.html'
     success_url = reverse_lazy('posts')
     context_object_name = 'posts'
     login_url = 'login'
@@ -76,11 +77,64 @@ class PostCreateView(LoginRequiredMixin, AllowedUsersMixin, CreateView):
         form.instance.user = custom_user
         return super().form_valid(form)
 
+class PostEditView(LoginRequiredMixin, AllowedUsersMixin, UpdateView):
+    model = Post
+    form_class = PostsEditForm
+    template_name = 'Posts/post_edit.html'
+    success_url = reverse_lazy('posts')
+    context_object_name = 'posts'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
+
+    def form_valid(self, form):
+        logged_in_user = self.request.user
+        try:
+            custom_user = Users.objects.get(user=logged_in_user)
+        except Users.DoesNotExist:
+            raise ValueError("No corresponding Users instance found for the logged-in user.")
+
+        form.instance.user = custom_user
+        return super().form_valid(form)
+
+class PostDeleteView(LoginRequiredMixin, AllowedUsersMixin, DeleteView):
+    model = Post
+    form_class = PostDeleteForm
+    template_name = 'Posts/post_delete.html'
+    success_url = reverse_lazy('posts')
+    context_object_name = 'posts'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
+
+    def get_initial(self):
+        return self.object.__dict__
+
+    def form_invalid(self, form):
+        return self.form_valid(form)
+
+class ClubsView(LoginRequiredMixin, AllowedUsersMixin, ListView):
+    model = Club
+    template_name = 'user/clubs.html'
+    context_object_name = 'clubs'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
 
 
-def clubs(request):
-    return render(request, 'user/clubs.html')
+class ClubDetailView(LoginRequiredMixin, AllowedUsersMixin, DetailView):
+    model = Club
+    template_name = 'Clubs/club_details.html'
+    context_object_name = 'club'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        related_clubs = Club.objects.exclude(id=self.object.id)[:4]
+        context['related_clubs'] = related_clubs
+
+        return context
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin', 'staff'])

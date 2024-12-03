@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/post_form.css' %}">
+{% endblock %}
+{% block content %}
+    <main>
+        <section id="edit">
+            <div class="form">
+                <h2>New Post</h2>
+
+                <form class="edit-form" action="" method="post">
+                    {{ form }}
+                    {% csrf_token %}
+                    <button type="submit">Publish</button>
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -1,5 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/clubs.css' %}">
+{% endblock %}
 {% block content %}
+    <main>
+        <div class="club-container">
+            {% for club in clubs %}
+                <div class="club-card">
+                    <div class="club-header">
+                        <div class="club-image">
+                            <img src="{{ club.image }}" alt="{{ club.title }}">
+                        </div>
 
+                        <h3 class="club-title">{{ club.title }}</h3>
+                    </div>
+
+                    <p class="club-content">{{ club.content|truncatewords:20 }}</p>
+
+
+                    <a href="{% url 'club_detail' club.slug %}" class="club-button">View Club</a>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
 {% endblock %}

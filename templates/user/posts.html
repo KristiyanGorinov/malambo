@@ -10,7 +10,7 @@
         <div class="add-post-button-container">
             <a href="{% url 'create_post' %}" class="add-post-button">Add Post</a>
         </div>
-    
+
         <div class="posts-container">
             {% for post in posts %}
                 <div class="post-card">
@@ -24,6 +24,11 @@
                     {% endif %}
                     <p class="post-description">{{ post.content|truncatewords:20 }}</p>
                     <a href="{% url 'post_detail' post.slug %}" class="read-more">Read More</a>
+                    <div></div>
+                    {% if post.user.user == request.user %}
+                        <a href="{% url 'edit_post' post.slug %}" class="edit-post-button">Edit Post</a>
+                        <a href="{% url 'delete_post' post.slug %}" class="delete-post-button">Delete Post</a>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>

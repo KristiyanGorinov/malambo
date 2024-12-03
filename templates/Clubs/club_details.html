@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/club_detail.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="club-detail-container">
+        <div class="club-detail-main">
+            <div class="club-header">
+                <p class="owner-name">{{ club.owner}}</p>
+            </div>
+
+            <h1 class="club-title">{{ club.title }}</h1>
+
+            <img src="{{ club.image }}" alt="{{ club.title }}" class="club-image">
+
+            <div class="club-content">
+                <p>{{ club.content }}</p>
+            </div>
+        </div>
+
+        <aside class="related-clubs">
+            <h2>Other Clubs</h2>
+            <div class="related-club-list">
+                {% if related_clubs %}
+                    {% for related_club in related_clubs %}
+                        <div class="related-club-card">
+                            <h3 class="related-club-title">{{ related_club.title }}</h3>
+                            {% if related_club.image %}
+                                <img src="{{ related_club.image }}" alt="{{ related_club.title }}" class="club-image">
+                            {% endif %}
+                            <a href="{% url 'club_detail' related_club.slug %}" class="read-more">View Club</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No related clubs available.</p>
+                {% endif %}
+            </div>
+        </aside>
+    </main>
+{% endblock %}
