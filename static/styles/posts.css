@@ -84,3 +84,30 @@ main {
 .read-more:hover {
     text-decoration: underline;
 }
+
+.edit-post-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #206c5c;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.edit-post-button:hover {
+    background-color: #2fb496;
+}
+
+.delete-post-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.delete-post-button:hover {
+    background-color: #8b0000;
+}
+
