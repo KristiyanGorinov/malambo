@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from users.models import Users
+from django.contrib.auth.models import User
 
 class Club(models.Model):
     title = models.CharField(
@@ -15,7 +16,7 @@ class Club(models.Model):
         max_length=100,
     )
     members = models.ManyToManyField(
-        Users,
+        User,
         related_name='joined_clubs',
         blank=True,
     )
@@ -27,6 +28,13 @@ class Club(models.Model):
     )
     uploaded_at = models.DateTimeField(
         auto_now=True,
+        editable=False,
+    )
+
+    user = models.ForeignKey(
+        to='users.Users',
+        on_delete=models.CASCADE,
+        related_name='clubs',
         editable=False,
     )
 
