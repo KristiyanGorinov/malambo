@@ -9,7 +9,6 @@
           crossorigin="anonymous"/>
 {% endblock %}
 
-
 {% block content %}
     <main>
         <div class="container">
@@ -23,11 +22,12 @@
                 </div>
                 <div class="menu">
                     <a href="" class="menu-link"><i class="fa-solid fa-circle-user menu-icon"></i>Account</a>
-                    <a href="{% url 'logout' %}" class="menu-link"><i class="fa-solid fa-right-from-bracket menu-icon"></i>Logout</a>
+                    <a href="{% url 'logout' %}" class="menu-link"><i
+                            class="fa-solid fa-right-from-bracket menu-icon"></i>Logout</a>
                 </div>
             </div>
 
-
+            <!-- Profile Update Form -->
             <form class="account" method="POST" action="">
                 {% csrf_token %}
                 <div class="account-header">
@@ -70,12 +70,52 @@
                         <textarea name="info" placeholder="Info">{{ profile.info }}</textarea>
                     </div>
                 </div>
-                {% for message in messages %}
-                <p id="messages">{{ message }}</p>
-            {% endfor %}
+
+                <div>
+                    {% for message in messages %}
+                        <p id="messages">{{ message }}</p>
+                    {% endfor %}
+                </div>
             </form>
 
-            
+
+        </div>
+
+        <!-- Leave Club Form -->
+        <div class="leave-club-container">
+            <h2>Current Club</h2>
+            {% if user_clubs %}
+                <ul>
+                    {% for club in user_clubs %}
+                        <li>
+                            {{ club.title }}
+                            <form method="POST" action="{% url 'leave_club' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-leave">Leave Club</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>You are not a member of any club.</p>
+            {% endif %}
+        </div>
+
+        <!-- Competitions Container -->
+        <div class="competitions-container">
+            <h2>My Competitions</h2>
+            {% if user_competitions %}
+                <ul>
+                    {% for comp in user_competitions %}
+                        <li>
+                            {{ comp.title }}
+                            <a href="#" class="Register-btn">Register</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>You haven't added any competitions yet</p>
+            {% endif %}
         </div>
     </main>
 {% endblock %}

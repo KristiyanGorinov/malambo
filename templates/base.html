@@ -31,7 +31,7 @@
                     <a href="{% url 'about' %}">About me</a>
                     <a href="{% url 'posts' %}">Posts</a>
                     <a href="{% url 'clubs' %}">Clubs</a>
-                    <a href="#">Upcoming Competitions</a>
+                    <a href="{% url 'competitions' %}">Upcoming Competitions</a>
                     <a href="{% url 'profile' %}">{{ request.user }}</a>
                 </div>
             {% else %}

@@ -1,10 +1,16 @@
 {% extends 'base.html' %}
+{% load user_tags %}
 {% load static %}
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'styles/clubs.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/clubs/clubs.css' %}">
 {% endblock %}
 {% block content %}
     <main>
+        {% if request.user.is_staff or request.user.is_superuser or request.user|in_group:"staff" %}
+            <div class="add-club-button-container">
+                <a href="{% url 'create_club' %}" class="add-club-button">Add Club</a>
+            </div>
+        {% endif %}
         <div class="club-container">
             {% for club in clubs %}
                 <div class="club-card">
@@ -20,6 +26,10 @@
 
 
                     <a href="{% url 'club_detail' club.slug %}" class="club-button">View Club</a>
+                    {% if club.user.user == request.user %}
+                        <a href="{% url 'edit_club' club.slug %}" class="club-button-edit">Edit Club</a>
+                        <a href="{% url 'delete_club' club.slug %}" class="club-button-delete">Delete Club</a>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>

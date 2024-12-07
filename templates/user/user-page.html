@@ -72,24 +72,17 @@
 
             <!-- Editor's Picks Row -->
             <div class="editors-picks-container">
-                <h2>OUR PICKS</h2>
-                <div class="editors-picks">
+                <h2>Most recent posts</h2>
+                {% for post in posts %}
+                    <div class="editors-picks">
                     <div class="pick-item">
-                        <img src="{% static 'images/post4.jpg' %}" alt="Climbing Careers">
-                        <p>How Do Climbing Careers End?</p>
+                        <a href="{% url 'post_detail' post.slug %}">
+                            <img src="{{ post.image_url }}" alt="{{ post.title }}" class="post-image">
+                        </a>
+                        <p>{{ post.title }}</p>
+                        <p>{{ post.content|truncatewords:10 }}</p>
                     </div>
-                    <div class="pick-item">
-                        <img src="{% static 'images/post4.jpg' %}" alt="Patagonian Brothers">
-                        <p>Are These Patagonian Brothers Alpine Climbing’s Next Big Thing?</p>
-                    </div>
-                    <div class="pick-item">
-                        <img src="{% static 'images/post4.jpg' %}" alt="Climbing Hard">
-                        <p>I Thought Climbing “Hard” Was Everything. I’m Glad I Was Wrong.</p>
-                    </div>
-                    <div class="pick-item">
-                        <img src="{% static 'images/post4.jpg' %}" alt="Print Magazine">
-                        <p>Our Print Magazine is Back! Here’s How to Buy</p>
-                    </div>
+                {% endfor %}
                 </div>
             </div>
         </div>

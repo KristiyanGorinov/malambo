@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/competitions/competitions.css' %}">
+{% endblock %}
+{% block content %}
+    <main>
+
+        <div class="competitions-container">
+            {% for competition in competitions %}
+                <div class="competition-card">
+                    <h2>{{ competition.club.title }}</h2>
+                    <div class="competition-header">
+                        <h3 class="competition-title">{{ competition.title }}</h3>
+                    </div>
+
+                    <p class="competition-content">{{ competition.context|truncatewords:20 }}</p>
+
+
+                    <a href="{% url 'competition_detail' competition.slug %}" class="competition-button">View
+                        Competition</a>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}

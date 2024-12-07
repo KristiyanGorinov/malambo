@@ -1,0 +1,126 @@
+main {
+    margin-top: 150px;
+    padding-bottom: 60px;
+    color: #333;
+    line-height: 1.6;
+}
+
+.add-club-button-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.add-club-button {
+    background-color: #2e8b57;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.add-club-button:hover {
+    background-color: #206c5c;
+}
+
+
+.club-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 100px;
+    padding: 20px;
+}
+
+.club-card {
+    border: 1px solid grey;
+    width: 300px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.club-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+
+.club-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.club-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.club-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    flex: 1;
+}
+
+.club-content {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.club-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #206c5c;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.club-button:hover {
+    background-color: #2fb496;
+}
+
+.club-button-edit {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.club-button-edit:hover {
+    background-color: #2fb496;
+}
+
+.club-button-delete {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.club-button-delete:hover {
+    background-color: #8b0000;
+}

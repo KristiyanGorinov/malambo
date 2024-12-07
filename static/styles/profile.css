@@ -181,6 +181,94 @@ main {
     border: 1.5px solid #028d85;
 }
 
+.leave-club-container {
+    width: 100%;
+    max-width: 300px;
+    margin-top: -160px;
+    margin-left: 10px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.leave-club-container h2 {
+    font-family: Poppins, sans-serif;
+    font-size: 18px;
+    color: #206c5c;
+}
+
+.leave-club-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.leave-club-container li {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-leave {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-leave:hover {
+    background-color: #c0392b;
+}
+
+.competitions-container {
+    width: 100%;
+    max-width: 300px;
+    margin-top: -70px;
+    margin-left: 324px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.competitions-container h2 {
+    font-family: Poppins, sans-serif;
+    font-size: 18px;
+    color: #206c5c;
+}
+
+.competitions-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.competitions-container li {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Register-btn {
+    background-color: #2e8b57;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.Register-btn:hover {
+    background-color: #2fb496;
+}
+
+
 #messages {
     background-color: green;
     color: #fff;

@@ -1,14 +1,16 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError, transaction
-from django.shortcuts import render, redirect
+from django.db import IntegrityError, transaction, connection
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View, DetailView, CreateView, UpdateView, DeleteView
 
 from SoftUniFinalExam.utils import get_user_obj
+from clubs.forms import ClubCreateForm, ClubEditForm, ClubDeleteForm
+from competitions.models import Competitions
 from posts.forms import PostCreateForm, PostsEditForm, PostDeleteForm
 from posts.models import Post
 from clubs.models import Club
@@ -77,6 +79,7 @@ class PostCreateView(LoginRequiredMixin, AllowedUsersMixin, CreateView):
         form.instance.user = custom_user
         return super().form_valid(form)
 
+
 class PostEditView(LoginRequiredMixin, AllowedUsersMixin, UpdateView):
     model = Post
     form_class = PostsEditForm
@@ -96,6 +99,7 @@ class PostEditView(LoginRequiredMixin, AllowedUsersMixin, UpdateView):
         form.instance.user = custom_user
         return super().form_valid(form)
 
+
 class PostDeleteView(LoginRequiredMixin, AllowedUsersMixin, DeleteView):
     model = Post
     form_class = PostDeleteForm
@@ -110,6 +114,7 @@ class PostDeleteView(LoginRequiredMixin, AllowedUsersMixin, DeleteView):
 
     def form_invalid(self, form):
         return self.form_valid(form)
+
 
 class ClubsView(LoginRequiredMixin, AllowedUsersMixin, ListView):
     model = Club
@@ -136,16 +141,182 @@ class ClubDetailView(LoginRequiredMixin, AllowedUsersMixin, DetailView):
 
         return context
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin', 'staff'])
-def club_manage(request):
-    return render(request, 'staff-user/manage-club.html')
+
+class ClubCreateView(LoginRequiredMixin, AllowedUsersMixin, CreateView):
+    model = Club
+    form_class = ClubCreateForm
+    template_name = 'Clubs/club_create.html'
+    success_url = reverse_lazy('clubs')
+    context_object_name = 'clubs'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
+
+    def form_valid(self, form):
+        logged_in_user = self.request.user
+        try:
+            custom_user = Users.objects.get(user=logged_in_user)
+        except Users.DoesNotExist:
+            raise ValueError("No corresponding Users instance found for the logged-in user.")
+
+        form.instance.user = custom_user
+        return super().form_valid(form)
+
+
+class ClubEditView(LoginRequiredMixin, AllowedUsersMixin, UpdateView):
+    model = Club
+    form_class = ClubEditForm
+    template_name = 'Clubs/club_edit.html'
+    success_url = reverse_lazy('clubs')
+    context_object_name = 'clubs'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
+
+    def form_valid(self, form):
+        logged_in_user = self.request.user
+        try:
+            custom_user = Users.objects.get(user=logged_in_user)
+        except Users.DoesNotExist:
+            raise ValueError("No corresponding Users instance found for the logged-in user.")
+
+        form.instance.user = custom_user
+        return super().form_valid(form)
+
+
+class ClubDeleteView(LoginRequiredMixin, AllowedUsersMixin, DeleteView):
+    model = Club
+    form_class = ClubDeleteForm
+    template_name = 'Clubs/club_delete.html'
+    success_url = reverse_lazy('clubs')
+    context_object_name = 'clubs'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
+
+    def get_initial(self):
+        return self.object.__dict__
+
+    def form_invalid(self, form):
+        return self.form_valid(form)
+
+
+@login_required
+@allowed_users(allowed_roles=['admin', 'staff', 'user'])
+def join_club(request, club_id):
+    club = get_object_or_404(Club, id=club_id)
+    user_id = request.user.id
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT 1 FROM clubs_club_members WHERE club_id = %s AND user_id = %s",
+            [club_id, user_id]
+        )
+        is_member_of_current_club = cursor.fetchone()
+
+    if is_member_of_current_club:
+        messages.info(request, "You are already a member of this club!")
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT club_id FROM clubs_club_members WHERE user_id = %s",
+                [user_id]
+            )
+            other_club = cursor.fetchone()
+
+        if other_club:
+            messages.error(
+                request,
+                f"You are already a member of another club. Leave it before joining a new one."
+            )
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "INSERT INTO clubs_club_members (club_id, user_id) VALUES (%s, %s)",
+                    [club_id, user_id]
+                )
+            messages.success(request, "You have successfully joined the club!")
+
+    return redirect('club_detail', club.slug)
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin', 'user', 'staff'])
-def user_home(request):
-    return render(request, 'user/user-page.html')
+def leave_club(request):
+    user_id = request.user.id
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "DELETE FROM clubs_club_members WHERE user_id = %s",
+            [user_id]
+        )
+
+    messages.success(request, "You have successfully left the club!")
+
+    return redirect('profile')
+
+
+class CompetitionsView(LoginRequiredMixin, AllowedUsersMixin, ListView):
+    model = Competitions
+    template_name = 'user/competitions.html'
+    context_object_name = 'competitions'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
+
+
+class CompetitionDetailView(LoginRequiredMixin, AllowedUsersMixin, DetailView):
+    model = Competitions
+    template_name = 'Competitions/competition_details.html'
+    context_object_name = 'competitions'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        related_competitions = Competitions.objects.exclude(id=self.object.id)[:4]
+        context['related_competitions'] = related_competitions
+
+        return context
+
+
+def add_competition(request, competitions_id):
+    competition = get_object_or_404(Competitions, id=competitions_id)
+    user_id = request.user.id
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT 1 FROM competitions_competitions_participants WHERE competitions_id = %s AND user_id = %s",
+            [competitions_id, user_id]
+        )
+        is_member_of_current_competition = cursor.fetchone()
+
+    if is_member_of_current_competition :
+        messages.info(request, "You have already added this competition in your profile")
+    else:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "INSERT INTO competitions_competitions_participants (competitions_id, user_id) VALUES (%s, %s)",
+                    [competitions_id, user_id]
+                )
+            messages.success(request, "You have already added this competition to your profile")
+
+    return redirect('competition_detail', competition.slug)
+
+
+class UserHomeView(LoginRequiredMixin,AllowedUsersMixin, ListView):
+    model = Post
+    template_name = 'user/user-page.html'
+    context_object_name = 'posts'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        posts = Post.objects.all().order_by('uploaded_at')[:4]
+        context['posts'] = posts
+
+        return context
 
 
 @login_required(login_url='login')
@@ -164,24 +335,40 @@ def user_profile(request):
             info="",
         )
 
+    user_id = request.user.id
+    user_clubs = Club.objects.filter(members=user_id)
+    user_competitions= Competitions.objects.filter(participants=user_id)
+
     if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST, instance=user)
-        if form.is_valid():
-            user = form.save()
-            profile.phone = request.POST.get('phone', profile.phone)
-            profile.info = request.POST.get('info', profile.info)
-            profile.first_name = user.first_name
-            profile.last_name = user.last_name
-            profile.email = user.email
-            profile.save()
-            messages.success(request, "Profile updated successfully!")
-            return redirect('profile')
+        if 'leave_club' in request.POST:
+            user_id = request.user.id
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "DELETE FROM clubs_club_members WHERE user_id = %s",
+                    [user_id]
+                )
+        else:
+            form = ProfileUpdateForm(request.POST, instance=user)
+            if form.is_valid():
+                user = form.save()
+                profile.phone = request.POST.get('phone', profile.phone)
+                profile.info = request.POST.get('info', profile.info)
+                profile.first_name = user.first_name
+                profile.last_name = user.last_name
+                profile.email = user.email
+                profile.save()
+                messages.success(request, "Profile updated successfully!")
+                return redirect('profile')
+
+
     else:
         form = ProfileUpdateForm(instance=user)
 
     context = {
         'form': form,
         'profile': profile,
+        'user_clubs': user_clubs,
+        'user_competitions': user_competitions,
     }
     return render(request, 'user/user-profile.html', context)
 

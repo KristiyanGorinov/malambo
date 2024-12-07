@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'styles/club_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/clubs/club_detail.css' %}">
 {% endblock %}
 {% block content %}
     <main class="club-detail-container">
         <div class="club-detail-main">
             <div class="club-header">
-                <p class="owner-name">{{ club.owner}}</p>
+                <p class="owner-name">{{ club.owner }}</p>
             </div>
 
             <h1 class="club-title">{{ club.title }}</h1>
@@ -17,6 +17,11 @@
             <div class="club-content">
                 <p>{{ club.content }}</p>
             </div>
+
+            <form action="{% url 'join_club' club.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="join-button">Join Club</button>
+            </form>
         </div>
 
         <aside class="related-clubs">
@@ -38,4 +43,35 @@
             </div>
         </aside>
     </main>
+
+    {% if messages %}
+        <ul id="messages" style="display: none;">
+            {% for message in messages %}
+                <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const messages = document.querySelectorAll("#messages li");
+        messages.forEach((message) => {
+            Swal.fire({
+                icon: message.classList.contains("alert-success") ? "success" : 
+                      message.classList.contains("alert-info") ? "info" : 
+                      "error",
+                title: message.textContent,
+                toast: true,
+                position: "top-end",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        });
+    });
+</script>
+
+
 {% endblock %}
