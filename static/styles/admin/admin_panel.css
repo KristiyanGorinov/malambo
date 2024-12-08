@@ -1,0 +1,273 @@
+.admin-panel {
+    padding: 20px;
+    margin-top: 100px;
+}
+
+.admin-title {
+    text-align: center;
+    font-size: 2em;
+    color: #206c5c;
+    margin-bottom: 20px;
+    font-family: "Poppins", sans-serif;
+}
+
+.panel-button-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.panel-button {
+    background-color: #206c5c;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.panel-button:hover{
+    background-color: #2fb496;
+}
+
+.panels-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.panel {
+    flex: 1;
+    background-color: #ffffff;
+    border: 1px solid #206c5c;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px;
+    overflow-y: auto;
+    max-height: 1000px;
+}
+
+.panel h2 {
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #206c5c;
+    font-family: "Poppins", sans-serif;
+}
+
+.panel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.panel li {
+    padding: 5px 10px;
+    border-bottom: 1px solid #ddd;
+    font-family: "Poppins", sans-serif;
+    color: #333;
+}
+
+.panel li:last-child {
+    border-bottom: none;
+}
+
+ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-edit, .btn-delete {
+    padding: 5px 10px;
+    font-size: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-edit {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #2980b9;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+
+.registrations-panel {
+    width: 100%;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.registrations-panel h2 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: #206c5c;
+}
+
+.registrations-panel ul {
+    list-style: none;
+    padding: 0;
+}
+
+.registrations-panel li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.registrations-panel .button-container {
+    display: flex;
+    gap: 10px;
+}
+
+.registrations-panel .btn-edit {
+    background-color: #206c5c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.registrations-panel .btn-edit:hover{
+    background-color: #2fb496;
+}
+
+.registrations-panel .btn-delete {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.admin-club-panel .panels-container {
+    margin-top: 120px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.admin-club-panel .panel {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-club-panel .panel h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.admin-club-panel .panel ul {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-club-panel .panel ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.admin-club-panel .btn-delete {
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.admin-club-panel .btn-delete:hover {
+    background-color: darkred;
+}
+
+
+#message-container {
+    margin: 20px auto;
+    padding: 10px;
+    width: 90%;
+    max-width: 800px;
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    text-align: center;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.message.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}

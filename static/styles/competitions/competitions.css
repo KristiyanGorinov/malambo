@@ -5,6 +5,26 @@ main {
     line-height: 1.6;
 }
 
+.add-competition-button-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.add-competition-button {
+    background-color: #2e8b57;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.add-competition-button:hover {
+    background-color: #206c5c;
+}
+
 .competitions-container {
     display: flex;
     flex-wrap: wrap;
@@ -59,4 +79,33 @@ main {
 
 .competition-button:hover {
     background-color: #2fb496;
+}
+
+.competition-button-edit {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.competition-button-edit:hover {
+    background-color: #2fb496;
+}
+
+.competition-button-delete {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.competition-button-delete:hover {
+    background-color: #8b0000;
 }

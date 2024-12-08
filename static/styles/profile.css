@@ -181,11 +181,19 @@ main {
     border: 1.5px solid #028d85;
 }
 
+.content-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    margin-top: -60px;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
 .leave-club-container {
     width: 100%;
     max-width: 300px;
-    margin-top: -160px;
-    margin-left: 10px;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     border-radius: 5px;
@@ -227,8 +235,6 @@ main {
 .competitions-container {
     width: 100%;
     max-width: 300px;
-    margin-top: -70px;
-    margin-left: 324px;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     border-radius: 5px;
@@ -268,6 +274,51 @@ main {
     background-color: #2fb496;
 }
 
+.Staff-container {
+    width: 100%;
+    max-width: 300px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.Staff-container h2 {
+    font-family: Poppins, sans-serif;
+    font-size: 18px;
+    color: #206c5c;
+    margin-bottom: 5px;
+}
+
+.Staff-container textarea{
+    display: block;
+    margin-top:10px;
+    width: 100%;
+    height: 30px;
+    padding: 5px;
+    border: 1.5px solid #028d85;
+    border-radius: 5px;
+    font-family: Poppins, sans-serif;
+    color: #333333;
+}
+
+.btn-staff {
+    margin-top: 10px;
+    background-color: #2e8b57;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border-color: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-staff:hover {
+    background-color: #2fb496;
+}
+
 
 #messages {
     background-color: green;
@@ -276,6 +327,7 @@ main {
     margin-top: 10px;
     border-radius: 0.25rem 0 0 0.25rem !important
 }
+
 
 @media screen and (max-width: 768px){
     .container{

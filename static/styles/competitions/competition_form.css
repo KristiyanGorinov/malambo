@@ -1,0 +1,129 @@
+.main{
+    overflow-y:hidden;
+}
+
+.form {
+  background-color: #2fb496;
+  max-width: 440px;
+  margin: 100px auto;
+  padding: 45px;
+  text-align: center;
+  border-radius: 80px;
+  border: 1px solid;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+
+  color: #fff;
+}
+
+.form h2 {
+  margin-bottom: 50px;
+  font-size: 30px;
+  color: #fff;
+
+}
+
+.form label {
+  font-size: 20px;
+}
+
+.form input{
+  border-radius: 15px;
+  outline: 0;
+  background: #fff;
+  width: 100%;
+  height: 50px;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.form textarea {
+  background: #fff;
+  border-radius: 15px;
+  width: 92%;
+  max-width: 92%;
+  min-width: 90%;
+  min-height: 50px;
+  margin-bottom: 10px;
+  padding: 15px;
+
+}
+.form button {
+  margin-top: 20px;
+  text-transform: uppercase;
+  outline: 0;
+  background-color: #2e8b57;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 15px;
+}
+.form button:hover,
+.form button:active,
+.form button:focus {
+  background-color: #206c5c;
+  font-weight: bolder;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 300px;
+  margin: 0 auto;
+}
+.container:before,
+.container:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.form .message {
+  margin: 15px 0 0;
+  color: #c0c4b5;
+  font-size: 17px;
+}
+.form .message a {
+  color: #bd2c2c;
+  text-decoration: none;
+}
+
+#search .form h2{
+margin-top:-40px;
+margin-bottom: 0px;
+  font-size: 30px;
+  /* color: #ffffff; */
+  color: rgb(190, 103, 2);
+}
+.search-result > .post {
+  scale: 0.5;
+}
+.search-result {
+  margin-top: -50px;
+  display: flex;
+}
+
+.no-result {
+  margin-top: 8rem;
+  font-size: 30px;
+}
+
+.helptext {
+  color: #ffffff;
+}
+
+.errorlist {
+  font-size: 18px;
+  color: #e96f6f;
+}
+
+input[readonly="readonly"], textarea[readonly="readonly"], select[readonly="readonly"]{
+  background-color: rgb(216, 206, 200);
+}
+input:focus, textarea:focus, select:focus {
+  border: 1px solid rgb(206, 206, 206);
+}
