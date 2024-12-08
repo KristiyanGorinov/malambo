@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/admin/admin_panel.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="admin-club-panel">
+        <h1 class="admin-title">Club Admin Panel</h1>
+        <div class="panels-container">
+            {% for club in clubs %}
+                <div class="panel">
+                    <h2>{{ club.title }}</h2>
+                    <ul>
+                        {% for member in club.members.all %}
+                            <li>{{ member.username }}
+                                <div class="button-container">
+                                    {% if request.user.is_superuser %}
+                                    <form method="POST" action="{% url 'remove_user_from_club' club.id member.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-delete">Remove User</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% empty %}
+                            <p>No members in this club.</p>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+    {% if messages %}
+        <div id="message-container">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const messages = document.querySelectorAll("#message-container .message");
+            setTimeout(() => {
+                messages.forEach((message) => {
+                    message.style.transition = "opacity 1s ease";
+                    message.style.opacity = "0";
+                    setTimeout(() => message.remove(), 1000);
+                });
+            }, 3000);
+        });
+    </script>
+{% endblock %}

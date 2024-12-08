@@ -33,6 +33,9 @@
                     <a href="{% url 'clubs' %}">Clubs</a>
                     <a href="{% url 'competitions' %}">Upcoming Competitions</a>
                     <a href="{% url 'profile' %}">{{ request.user }}</a>
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                        <a href="{% url 'admin-panel' %}">Admin Panel</a>
+                    {% endif %}
                 </div>
             {% else %}
                 <div class="guest">

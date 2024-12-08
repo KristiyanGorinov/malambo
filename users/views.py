@@ -3,17 +3,21 @@ from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction, connection
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.forms import UserCreationForm
+from django.template.context_processors import request
 from django.urls import reverse_lazy
-from django.views.generic import ListView, View, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, View, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
 from SoftUniFinalExam.utils import get_user_obj
 from clubs.forms import ClubCreateForm, ClubEditForm, ClubDeleteForm
+from competitions.forms import CompetitionCreateForm, CompetitionEditForm, CompetitionDeleteForm
 from competitions.models import Competitions
 from posts.forms import PostCreateForm, PostsEditForm, PostDeleteForm
 from posts.models import Post
 from clubs.models import Club
+from registration.forms import RegisterBaseForm
+from registration.models import Registration
 from .decorators import unauthenticated_user, allowed_users, AllowedUsersMixin
 from .forms import CreateUserForm, ProfileUpdateForm
 from django.contrib import messages
@@ -149,7 +153,7 @@ class ClubCreateView(LoginRequiredMixin, AllowedUsersMixin, CreateView):
     success_url = reverse_lazy('clubs')
     context_object_name = 'clubs'
     login_url = 'login'
-    allowed_roles = ['admin', 'staff', 'user']
+    allowed_roles = ['admin', 'staff']
 
     def form_valid(self, form):
         logged_in_user = self.request.user
@@ -169,7 +173,7 @@ class ClubEditView(LoginRequiredMixin, AllowedUsersMixin, UpdateView):
     success_url = reverse_lazy('clubs')
     context_object_name = 'clubs'
     login_url = 'login'
-    allowed_roles = ['admin', 'staff', 'user']
+    allowed_roles = ['admin', 'staff']
 
     def form_valid(self, form):
         logged_in_user = self.request.user
@@ -189,7 +193,7 @@ class ClubDeleteView(LoginRequiredMixin, AllowedUsersMixin, DeleteView):
     success_url = reverse_lazy('clubs')
     context_object_name = 'clubs'
     login_url = 'login'
-    allowed_roles = ['admin', 'staff', 'user']
+    allowed_roles = ['admin', 'staff']
 
     def get_initial(self):
         return self.object.__dict__
@@ -279,6 +283,115 @@ class CompetitionDetailView(LoginRequiredMixin, AllowedUsersMixin, DetailView):
         return context
 
 
+class CompetitionCreateView(LoginRequiredMixin, AllowedUsersMixin, CreateView):
+    model = Competitions
+    form_class = CompetitionCreateForm
+    template_name = 'Competitions/competition_create.html'
+    success_url = reverse_lazy('competitions')
+    context_object_name = 'competitions'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff']
+
+    def form_valid(self, form):
+        logged_in_user = self.request.user
+        try:
+            custom_user = Users.objects.get(user=logged_in_user)
+        except Users.DoesNotExist:
+            raise ValueError("No corresponding Users instance found for the logged-in user.")
+
+        form.instance.user = custom_user
+        return super().form_valid(form)
+
+
+class CompetitionEditView(LoginRequiredMixin, AllowedUsersMixin, UpdateView):
+    model = Competitions
+    form_class = CompetitionEditForm
+    template_name = 'Competitions/competition_edit.html'
+    success_url = reverse_lazy('competitions')
+    context_object_name = 'competitions'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff']
+
+    def form_valid(self, form):
+        logged_in_user = self.request.user
+        try:
+            custom_user = Users.objects.get(user=logged_in_user)
+        except Users.DoesNotExist:
+            raise ValueError("No corresponding Users instance found for the logged-in user.")
+
+        form.instance.user = custom_user
+        return super().form_valid(form)
+
+
+class CompetitionDeleteView(LoginRequiredMixin, AllowedUsersMixin, DeleteView):
+    model = Competitions
+    form_class = CompetitionDeleteForm
+    template_name = 'Competitions/competition_delete.html'
+    success_url = reverse_lazy('competitions')
+    context_object_name = 'competitions'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff']
+
+    def get_initial(self):
+        return self.object.__dict__
+
+    def form_invalid(self, form):
+        return self.form_valid(form)
+
+
+class CompetitionRegisterView(LoginRequiredMixin, AllowedUsersMixin, CreateView):
+    model = Registration
+    form_class = RegisterBaseForm
+    template_name = 'Competitions/competition_register.html'
+    success_url = reverse_lazy('profile')
+    context_object_name = 'competitions'
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff', 'user']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+
+        competition_slug = self.kwargs.get('slug')
+        try:
+            competition = Competitions.objects.get(slug=competition_slug)
+            form.instance.competition = competition
+        except Competitions.DoesNotExist:
+            form.add_error(None, "Competition does not exist.")
+            return self.form_invalid(form)
+
+        response = super().form_valid(form)
+
+        from django.db import connection
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "DELETE FROM competitions_competitions_participants WHERE user_id = %s AND competitions_id = %s",
+                    [self.request.user.id, competition.id]
+                )
+        except Exception as e:
+            print(f"Error deleting row: {e}")
+
+        messages.success(self.request, f"You have successfully registered for the competition: {competition.title}")
+        return response
+
+
+class RegistrationDeleteView(LoginRequiredMixin, AllowedUsersMixin, View):
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff']
+
+    def post(self, request, pk, *args, **kwargs):
+        registration = get_object_or_404(Registration, pk=pk)
+
+        registration.delete()
+
+        messages.success(request,
+                         f"Registration for {registration.first_name} {registration.last_name} has been successfully reviewed.")
+
+        return redirect(reverse_lazy('admin-panel'))
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin', 'staff', 'user'])
 def add_competition(request, competitions_id):
     competition = get_object_or_404(Competitions, id=competitions_id)
     user_id = request.user.id
@@ -290,20 +403,20 @@ def add_competition(request, competitions_id):
         )
         is_member_of_current_competition = cursor.fetchone()
 
-    if is_member_of_current_competition :
+    if is_member_of_current_competition:
         messages.info(request, "You have already added this competition in your profile")
     else:
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "INSERT INTO competitions_competitions_participants (competitions_id, user_id) VALUES (%s, %s)",
-                    [competitions_id, user_id]
-                )
-            messages.success(request, "You have already added this competition to your profile")
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "INSERT INTO competitions_competitions_participants (competitions_id, user_id) VALUES (%s, %s)",
+                [competitions_id, user_id]
+            )
+        messages.success(request, "You have successfuly added this competition to your profile")
 
     return redirect('competition_detail', competition.slug)
 
 
-class UserHomeView(LoginRequiredMixin,AllowedUsersMixin, ListView):
+class UserHomeView(LoginRequiredMixin, AllowedUsersMixin, ListView):
     model = Post
     template_name = 'user/user-page.html'
     context_object_name = 'posts'
@@ -320,7 +433,6 @@ class UserHomeView(LoginRequiredMixin,AllowedUsersMixin, ListView):
 
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['admin', 'user', 'staff'])
 def user_profile(request):
     user = request.user
     try:
@@ -337,7 +449,7 @@ def user_profile(request):
 
     user_id = request.user.id
     user_clubs = Club.objects.filter(members=user_id)
-    user_competitions= Competitions.objects.filter(participants=user_id)
+    user_competitions = Competitions.objects.filter(participants=user_id)
 
     if request.method == 'POST':
         if 'leave_club' in request.POST:
@@ -371,6 +483,27 @@ def user_profile(request):
         'user_competitions': user_competitions,
     }
     return render(request, 'user/user-profile.html', context)
+
+
+class BecomeStaffView(LoginRequiredMixin, View):
+    login_url = 'login'
+    staff_pass_key = "STAFF123"
+
+    def post(self, request, *args, **kwargs):
+        staff_key = request.POST.get("staff_key")
+
+        if staff_key == self.staff_pass_key:
+            staff_group, created = Group.objects.get_or_create(name="staff")
+            request.user.groups.add(staff_group)
+
+            request.user.is_staff = True
+            request.user.save()
+
+            messages.success(request, "You have successfully become a staff member!")
+        else:
+            messages.error(request, "Invalid staff key. Please try again.")
+
+        return redirect("profile")
 
 
 @unauthenticated_user
@@ -417,8 +550,6 @@ def register_user(request):
                 messages.error(request, "There was an error creating your account. Please try again.")
                 return render(request, 'user/register-user.html', {'form': form})
 
-        else:
-            messages.error(request, "There were errors in the form.")
 
     context = {'form': form}
     return render(request, 'user/register-user.html', context)
@@ -446,3 +577,107 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('home')
+
+
+class PanelView(LoginRequiredMixin, AllowedUsersMixin, TemplateView):
+    model = User
+    login_url = 'login'
+    allowed_roles = ['admin', 'staff']
+    template_name = 'Admins/admin_panel.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = User.objects.all()
+        context['posts'] = Post.objects.all()
+        context['competitions'] = Competitions.objects.all()
+        context['clubs'] = Club.objects.all()
+        context['registrations'] = Registration.objects.all()
+        return context
+
+
+class ClubAdminPanelView(LoginRequiredMixin, AllowedUsersMixin, View):
+    template_name = 'Admins/admin_club_panel.html'
+    allowed_roles = ['admin', 'staff']
+    login_url = 'login'
+
+    def get(self, request, *args, **kwargs):
+        clubs = Club.objects.prefetch_related(
+            'members'
+        )
+
+        context = {
+            'clubs': clubs
+        }
+        return render(request, self.template_name, context)
+
+
+class RemoveUserFromClubView(LoginRequiredMixin, AllowedUsersMixin, View):
+    allowed_roles = ['admin', 'staff']
+    login_url = 'login'
+
+    def post(self, request, club_id, user_id, *args, **kwargs):
+        club = get_object_or_404(Club, id=club_id)
+        user = get_object_or_404(User, id=user_id)
+
+        club.members.remove(user)
+
+        messages.success(request, f"{user.username} has been removed from {club.title}.")
+
+        return redirect(reverse_lazy('admin_club_panel'))
+@login_required
+@allowed_users(allowed_roles=['admin'])
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+
+    if user == request.user:
+        messages.error(request, "You cannot delete your own account.")
+        return redirect('admin-panel')
+
+    user.delete()
+    messages.success(request, f"User {user.username} has been successfully deleted.")
+    return redirect('admin-panel')
+
+
+@login_required
+@allowed_users(allowed_roles=['admin'])
+def make_superuser(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+
+    if user == request.user:
+        messages.error(request, "You are already a superuser")
+        return redirect('admin-panel')
+    if user.is_superuser and user.is_staff:
+        messages.error(request, "This user is already a superuser")
+        return redirect('admin-panel')
+
+    admin_group, created = Group.objects.get_or_create(name="admin")
+    user.groups.add(admin_group)
+    user.is_superuser = True
+    user.is_staff = True
+    user.save()
+    messages.success(request, f"User {user.username} has been successfully made a superuser.")
+    return redirect('admin-panel')
+
+class RevokeStaffView(LoginRequiredMixin, AllowedUsersMixin, View):
+    allowed_roles = ['admin']
+    login_url = 'login'
+
+    def post(self, request, user_id, *args, **kwargs):
+        user = get_object_or_404(User, id=user_id)
+
+        if user == request.user:
+            messages.error(request, "You cannot revoke yourself")
+            return redirect('admin-panel')
+
+        if user.is_staff or user.is_superuser:
+            admin_group,  created = Group.objects.get_or_create(name="admin")
+            staff_group, created = Group.objects.get_or_create(name="staff")
+            user.groups.remove(admin_group,staff_group)
+            user.is_staff = False
+            user.is_superuser = False
+            user.save()
+            messages.success(request, f"Staff privileges revoked for {user.username}.")
+        else:
+            messages.error(request, f"{user.username} is not a staff member.")
+
+        return redirect(reverse_lazy('admin-panel'))

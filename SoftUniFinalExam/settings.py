@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'posts.apps.PostsConfig',
     'clubs.apps.ClubsConfig',
-    'competitions.apps.CompetitionsConfig'
+    'competitions.apps.CompetitionsConfig',
+    'registration.apps.RegistrationConfig'
 ]
 
 MIDDLEWARE = [

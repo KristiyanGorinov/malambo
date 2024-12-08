@@ -16,28 +16,26 @@ def allowed_users(allowed_roles=[]):
     def decorator(view_func):
         def wrapper_func(request, *args, **kwargs):
 
-            group = None
             if request.user.groups.exists():
-                group = request.user.groups.all()[0].name
-            if group in allowed_roles:
-                return view_func(request, *args, **kwargs)
-            else:
-                return HttpResponse("You are not allowed to access this page.")
+                group_names = [group.name for group in request.user.groups.all()]
+                if any(group in allowed_roles for group in group_names):
+                    return view_func(request, *args, **kwargs)
+
+            return HttpResponse("You are not allowed to access this page.")
         return wrapper_func
     return decorator
 
-#for CBV
 
 class AllowedUsersMixin:
     allowed_roles = []
 
     def dispatch(self, request, *args, **kwargs):
-        group = None
+        if request.user.is_superuser or request.user.is_staff:
+            return super().dispatch(request, *args, **kwargs)
 
         if request.user.groups.exists():
-            group = request.user.groups.all()[0].name
-
-        if group in self.allowed_roles:
-            return super().dispatch(request, *args, **kwargs)
+            group_names = [group.name for group in request.user.groups.all()]
+            if any(group in self.allowed_roles for group in group_names):
+                return super().dispatch(request, *args, **kwargs)
 
         return HttpResponse("You are not allowed to access this page.")

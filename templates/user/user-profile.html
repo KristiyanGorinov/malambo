@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load user_tags %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -80,42 +80,58 @@
 
 
         </div>
+        <div class="content-layout">
+            <!-- Leave Club Form -->
+            <div class="leave-club-container">
+                <h2>Current Club</h2>
+                {% if user_clubs %}
+                    <ul>
+                        {% for club in user_clubs %}
+                            <li>
+                                {{ club.title }}
+                                <form method="POST" action="{% url 'leave_club' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-leave">Leave Club</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>You are not a member of any club.</p>
+                {% endif %}
+            </div>
 
-        <!-- Leave Club Form -->
-        <div class="leave-club-container">
-            <h2>Current Club</h2>
-            {% if user_clubs %}
-                <ul>
-                    {% for club in user_clubs %}
-                        <li>
-                            {{ club.title }}
-                            <form method="POST" action="{% url 'leave_club' %}">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-leave">Leave Club</button>
-                            </form>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>You are not a member of any club.</p>
-            {% endif %}
-        </div>
+            <!-- Competitions Container -->
+            <div class="competitions-container">
+                <h2>My Competitions</h2>
+                {% if user_competitions %}
+                    <ul>
+                        {% for comp in user_competitions %}
+                            <li>
+                                {{ comp.title }}
+                                <a href="{% url 'register-competition' comp.slug %}" class="Register-btn">Register</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>You haven't added any competitions yet</p>
+                {% endif %}
+            </div>
 
-        <!-- Competitions Container -->
-        <div class="competitions-container">
-            <h2>My Competitions</h2>
-            {% if user_competitions %}
-                <ul>
-                    {% for comp in user_competitions %}
-                        <li>
-                            {{ comp.title }}
-                            <a href="#" class="Register-btn">Register</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>You haven't added any competitions yet</p>
-            {% endif %}
+            <!-- Become Staff -->
+            <div class="Staff-container">
+                <h2>Become Staff</h2>
+                {% if request.user.is_staff or request.user.is_superuser %}
+                    <p>You are already a staff!</p>
+                {% else %}
+                    <p>Enter staff key:</p>
+                    <form method="POST" action="{% url 'become_staff' %}">
+                        {% csrf_token %}
+                        <textarea name="staff_key" placeholder="Enter staff key here..." required></textarea>
+                        <button type="submit" class="btn-staff">Become Staff</button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
     </main>
 {% endblock %}

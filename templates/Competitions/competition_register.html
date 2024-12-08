@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/competitions/competition_form.css' %}">
+{% endblock %}
+{% block content %}
+    <main>
+        <section id="create">
+            <div class="form">
+                <h2>Register for Competition</h2>
+
+                <form class="create-form" action="" method="post">
+                    {{ form }}
+                    {% csrf_token %}
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}

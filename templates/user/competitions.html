@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
+{% load user_tags %}
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'styles/competitions/competitions.css' %}">
 {% endblock %}
 {% block content %}
     <main>
-
+        {% if request.user.is_staff or request.user.is_superuser or request.user|in_group:"staff" %}
+            <div class="add-competition-button-container">
+                <a href="{% url 'create_competition' %}" class="add-competition-button">Add Competition</a>
+            </div>
+        {% endif %}
         <div class="competitions-container">
             {% for competition in competitions %}
                 <div class="competition-card">
@@ -19,8 +24,14 @@
 
                     <a href="{% url 'competition_detail' competition.slug %}" class="competition-button">View
                         Competition</a>
+                    {% if request.user.is_staff or request.user.is_superuser or request.user|in_group:"staff" %}
+                        <a href="{% url 'edit_competition' competition.slug %}" class="competition-button-edit">Edit Competition</a>
+                        <a href="{% url 'delete_competition' competition.slug %}" class="competition-button-delete">Delete Competition</a>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
     </main>
+    
+
 {% endblock %}
