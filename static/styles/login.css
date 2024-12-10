@@ -102,3 +102,59 @@ footer {
     font-size: 0.9em;
     box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.1);
 }
+
+@media (max-width: 768px) {
+    #logo {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .user_card {
+        width: 80% !important;
+        padding: 15px !important;
+    }
+
+    #form-title {
+        font-size: 1.5rem !important;
+    }
+
+    .login_btn {
+        font-size: 0.9rem !important;
+        padding: 10px 15px !important;
+    }
+
+}
+
+@media (max-width: 480px) {
+    body,
+    html {
+        padding: 10px !important;
+    }
+
+    #logo {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .user_card {
+        width: 90% !important;
+        padding: 25px !important;
+    }
+
+    #form-title {
+        font-size: 1.2rem !important;
+    }
+
+    .login_container {
+        padding: 0 10px !important;
+    }
+
+    .login_btn {
+        font-size: 0.8rem !important;
+        padding: 8px 12px !important;
+    }
+
+    footer {
+        font-size: 0.8rem !important;
+    }
+}

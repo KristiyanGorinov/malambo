@@ -22,7 +22,7 @@ header {
     left: 0;
     width: 100%;
     background-color: #206c5c;
-    padding: 1em 3em;
+    padding: 1em 2em;
     color: white;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 10;
@@ -33,6 +33,7 @@ nav {
     justify-content: flex-end!important;
     align-items: center!important;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;!important;
+    flex-wrap: wrap;
 }
 
 nav a {
@@ -42,6 +43,7 @@ nav a {
     font-weight: bold;
     transition: color 0.3s;
     line-height: 1!important;
+    font-size: 1rem;
 }
 
 nav a:hover {
@@ -79,4 +81,54 @@ footer {
     font-size: 0.9em;
     box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.1);
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;!important;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        padding: 0.8em 1em;
+    }
+
+    nav {
+        justify-content: center;
+        gap: 1em;
+    }
+
+    nav a {
+        margin-left: 0;
+        font-size: 0.9rem;
+    }
+
+    #logo {
+        top: 50px;
+        left: 5px;
+        width: 50px;
+        height: 50px;
+    }
+
+    footer {
+        padding: 0.5em 0;
+        font-size: 0.8em;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav a {
+        margin: 0.5em 0;
+    }
+
+    header {
+        text-align: center;
+    }
+
+    #logo {
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 40px;
+    }
 }

@@ -109,3 +109,58 @@ main {
 .competition-button-delete:hover {
     background-color: #8b0000;
 }
+
+@media (max-width: 768px) {
+    main {
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 100px;
+        padding-bottom: 40px;
+    }
+
+    .competition-container {
+        gap: 15px;
+    }
+
+    .competition-card {
+        width: 80%;
+        max-width: 400px;
+    }
+
+    .add-competition-button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 80px;
+        padding-bottom: 30px;
+    }
+
+    .competition-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .competition-card {
+        width: 100%;
+    }
+
+    .add-competition-button {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .competition-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .author-image {
+        margin-bottom: 10px;
+    }
+}

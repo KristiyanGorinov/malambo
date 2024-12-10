@@ -111,3 +111,57 @@ main {
     background-color: #8b0000;
 }
 
+@media (max-width: 768px) {
+    main {
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 100px;
+        padding-bottom: 40px;
+    }
+
+    .posts-container {
+        gap: 15px;
+    }
+
+    .post-card {
+        width: 80%;
+        max-width: 400px;
+    }
+
+    .add-post-button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 80px;
+        padding-bottom: 30px;
+    }
+
+    .posts-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .post-card {
+        width: 100%;
+    }
+
+    .add-post-button {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .post-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .author-image {
+        margin-bottom: 10px;
+    }
+}

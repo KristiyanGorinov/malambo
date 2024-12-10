@@ -8,12 +8,13 @@ main {
 
 .container{
     display: flex;
+    flex-wrap: wrap;
     margin: 50px 10px;
 
 }
 
 .profile {
-    flex: 1;
+    flex: 1 1 300px;
     margin-right: 10px;
     background-color: #fff;
     box-shadow: rgba(0,0,0,0.16) 0px 1px 4px;
@@ -50,7 +51,7 @@ main {
 }
 
 .menu {
-    margin: 0 20px;
+    margin: 10px 0;
 }
 
 .menu-link{
@@ -84,7 +85,7 @@ main {
 }
 
 .account {
-    flex: 2;
+    flex: 2 1 600px;
     margin-left: 10px;
     background-color: white;
     box-shadow: rgba(0,0,0,0.16) 0px 1px 4px;
@@ -182,13 +183,11 @@ main {
 }
 
 .content-layout {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     padding: 20px;
     margin-top: -60px;
-    justify-content: flex-end;
-    align-items: flex-start;
 }
 
 .leave-club-container {
@@ -329,34 +328,94 @@ main {
 }
 
 
-@media screen and (max-width: 768px){
-    .container{
-        flex-direction: column;
+@media screen and (max-width: 1000px) {
+    body {
+        overflow: visible;
     }
-    .profile{
-        margin-bottom: 20px;
+
+    main {
+        margin-top: 150px;
+    }
+
+    .container {
+        flex-direction: column;
+        margin: 20px 20px;
+        gap: 20px
+    }
+
+    .profile {
         margin-right: 0;
+        margin-bottom: 20px;
+        padding-bottom: -200px;
     }
 
-    .account{
-        margin: 0;
+    .account {
+        margin-left: 0;
+        margin-top: 20px;
     }
 
-    .account-header{
+    .account-header {
         flex-direction: column;
+        align-items: flex-start;
+
     }
 
-    .account-edit{
+    .account-edit {
         flex-direction: column;
-        margin: 10px;
+        margin: 10px 0;
     }
 
     .input-container {
-        margin: 10px;
+        margin: 10px 0;
+        padding: 5px;
     }
 
-    .input-container input{
-        margin-right: 10px;
+    .input-container input {
+        width: 100%;
     }
 
+    .content-layout {
+        margin-top: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .profile,
+    .account {
+        flex: 1 1 100%;
+        margin: 0;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profile-img {
+        margin: 0 auto;
+        margin-top: 5px;
+    }
+
+    .menu {
+        margin: 10px auto;
+        text-align: center;
+    }
+
+    .menu-link {
+        padding: 15px;
+    }
+
+    .btn-save,
+    .btn-leave,
+    .btn-staff {
+        width: 100%;
+    }
+
+    .leave-club-container ul,
+    .competitions-container ul {
+        text-align: center;
+    }
 }

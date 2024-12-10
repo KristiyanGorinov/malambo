@@ -271,3 +271,79 @@ ul li {
     color: #856404;
     border: 1px solid #ffeeba;
 }
+
+@media (max-width: 1200px) {
+    .admin-title {
+        font-size: 1.8em;
+    }
+
+    .panel-button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .panels-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .panel {
+        flex: none;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-title {
+        font-size: 1.6em;
+    }
+
+    .panel-button {
+        font-size: 14px;
+        padding: 8px 14px;
+    }
+
+    .panel h2 {
+        font-size: 1.2em;
+    }
+
+    .panel ul li {
+        font-size: 14px;
+    }
+
+    .message {
+        font-size: 12px;
+    }
+
+    .admin-club-panel .panels-container {
+        grid-template-columns: 1fr;
+    }
+
+    .panel {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-title {
+        font-size: 1.4em;
+    }
+
+    .panel-button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .panel h2 {
+        font-size: 1.1em;
+    }
+
+    .panel ul li {
+        font-size: 13px;
+    }
+
+    .message {
+        font-size: 11px;
+    }
+}

@@ -206,3 +206,89 @@ footer {
   animation-delay: 3.5s;
   animation-duration: 3s;
 }
+
+@media (max-width: 1530px) {
+    nav {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    nav a {
+        margin: 0.5em 1em;
+        font-size: 0.9em;
+    }
+
+    .gallery {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 2em;
+    }
+
+    .gallery-column {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1em;
+    }
+
+    .gallery-column img {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 1em;
+    }
+
+    nav a {
+        font-size: 0.8em;
+    }
+
+    .logo {
+        width: 200px;
+    }
+
+    .title {
+        font-size: 2em;
+    }
+
+    .button-container {
+        flex-direction: column;
+        gap: 0.5em;
+    }
+
+    .gallery {
+        margin: 2em 1em;
+    }
+
+    .gallery-column img {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    header, footer {
+        padding: 0.5em;
+    }
+
+    .logo {
+        width: 150px;
+    }
+
+    .title {
+        font-size: 1.5em;
+    }
+
+    .button {
+        padding: 0.5em;
+    }
+
+    .gallery-column img {
+        width: 80px;
+        height: 80px;
+    }
+}
